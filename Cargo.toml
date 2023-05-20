@@ -1,14 +1,19 @@
 [package]
 name = "the-operator"
 version = "0.1.0"
-edition = "2021"
+authors = ["Infernity <infernity@infernity.dev>", "Digin"]
+edition = "2018"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[test]]
+name = "should_panic"
+harness = false
 
 [dependencies]
 bootloader = "=0.9.23"
 volatile = "=0.2.6"
 spin = "=0.5.2"
+x86_64 = "=0.14.10"
+uart_16550 = "=0.2.18"
 
 [dependencies.lazy_static]
 version = "1.0"
@@ -19,3 +24,7 @@ panic = "abort"
 
 [profile.release]
 panic = "abort"
+
+[package.metadata.bootimage]
+test-args = ["-device", "isa-debug-exit,iobase=0xf4,iosize=0x04"]
+test-success-exit-code = 33         # (0x10 << 1) | 1
