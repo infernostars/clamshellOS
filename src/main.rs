@@ -4,17 +4,24 @@
 #![test_runner(the_operator::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use the_operator::println;
+use the_operator::{print, println};
 use core::panic::PanicInfo;
+
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("Hello World{}", "!");
+    println!("theOperator // version {}", env!("CARGO_PKG_VERSION"));
+    println!();
+
+    the_operator::init();
+
 
     #[cfg(test)]
     test_main();
 
-    loop {}
+    println!("no crash!");
+    loop {
+    }
 }
 
 /// This function is called on panic.
