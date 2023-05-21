@@ -7,7 +7,6 @@
 use the_operator::{print, println};
 use core::panic::PanicInfo;
 
-
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("theOperator // version {}", env!("CARGO_PKG_VERSION"));
@@ -19,9 +18,8 @@ pub extern "C" fn _start() -> ! {
     #[cfg(test)]
     test_main();
 
-    println!("no crash!");
-    loop {
-    }
+    println!("started successfully");
+    the_operator::hlt_loop();
 }
 
 /// This function is called on panic.
@@ -29,7 +27,7 @@ pub extern "C" fn _start() -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    the_operator::hlt_loop();
 }
 
 #[cfg(test)]
