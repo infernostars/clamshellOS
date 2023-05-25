@@ -1,5 +1,5 @@
 [package]
-name = "the-operator"
+name = "clamshell"
 version = "0.1.0"
 authors = ["Infernity <infernity@infernity.dev>", "Digin"]
 edition = "2018"

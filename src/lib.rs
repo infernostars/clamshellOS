@@ -12,7 +12,6 @@ pub mod vga_buffer;
 pub mod interrupts;
 pub mod gdt;
 
-// initializes theOperator [working title]
 pub fn init() {
     gdt::init();
     interrupts::init_idt();

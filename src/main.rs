@@ -4,36 +4,35 @@
 #![test_runner(the_operator::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use the_operator::{print, println};
 use core::panic::PanicInfo;
+use clamshell::println;
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("theOperator // version {}", env!("CARGO_PKG_VERSION"));
+    println!("clamshellOS // version {}", env!("CARGO_PKG_VERSION"));
     println!();
 
-    the_operator::init();
+    clamshell::init();
 
 
     #[cfg(test)]
     test_main();
 
     println!("started successfully");
-    the_operator::hlt_loop();
+    clamshell::hlt_loop();
 }
 
 /// This function is called on panic.
 #[cfg(not(test))]
 #[panic_handler]
-fn panic(info: &PanicInfo) -> ! {
+fn panic(info: &PanicInfo) {
     println!("{}", info);
-    the_operator::hlt_loop();
 }
 
 #[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    the_operator::test_panic_handler(info)
+    clamshell::test_panic_handler(info)
 }
 
 #[test_case]
