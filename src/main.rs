@@ -5,28 +5,31 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
-use clamshell::println;
+use clamshell::{println, print_color, println_color, print};
+use clamshell::vga_buffer::{ColorCode, Color};
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("clamshellOS // version {}", env!("CARGO_PKG_VERSION"));
+    print_color!(ColorCode::new(Color::Yellow, Color::Black), "clamshellOS ");
+    println!("// version {}", env!("CARGO_PKG_VERSION"));
     println!();
 
     clamshell::init();
 
-
     #[cfg(test)]
     test_main();
 
-    println!("started successfully");
+    print!("started successfully\n\n>");
     clamshell::hlt_loop();
 }
 
 /// This function is called on panic.
 #[cfg(not(test))]
 #[panic_handler]
-fn panic(info: &PanicInfo) {
-    println!("{}", info);
+fn panic(info: &PanicInfo) -> ! {
+    println_color!(ColorCode::new(Color::LightRed, Color::Black), "{}\n", info);
+    print!("Stopping...");
+    clamshell::hlt_loop();
 }
 
 #[cfg(test)]

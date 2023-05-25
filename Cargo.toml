@@ -1,6 +1,6 @@
 [package]
 name = "clamshell"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Infernity <infernity@infernity.dev>", "Digin"]
 edition = "2018"
 
@@ -14,8 +14,8 @@ volatile = "=0.2.6"
 spin = "=0.5.2"
 x86_64 = "=0.14.10"
 uart_16550 = "=0.2.18"
-pic8259 = "0.10.1"
-pc-keyboard = "0.5.0"
+pic8259 = "=0.10.1"
+pc-keyboard = "=0.7.0"
 
 [dependencies.lazy_static]
 version = "1.0"

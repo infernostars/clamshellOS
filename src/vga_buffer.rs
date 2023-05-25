@@ -41,11 +41,11 @@ pub enum Color {
 /// A combination of a foreground and a background color.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
-struct ColorCode(u8);
+pub struct ColorCode(u8);
 
 impl ColorCode {
     /// Create a new `ColorCode` with the given foreground and background colors.
-    fn new(foreground: Color, background: Color) -> ColorCode {
+    pub fn new(foreground: Color, background: Color) -> ColorCode {
         ColorCode((background as u8) << 4 | (foreground as u8))
     }
 }
@@ -164,14 +164,46 @@ macro_rules! println {
     ($($arg:tt)*) => ($crate::print!("{}\n", format_args!($($arg)*)));
 }
 
+#[macro_export]
+macro_rules! print_color {
+    ($color:expr, $fmt:literal $(, $($arg:tt)*)?) => {
+        $crate::vga_buffer::_print_with_color(format_args!($fmt $(, $($arg)*)?), $color)
+    };
+}
+
+#[macro_export]
+macro_rules! println_color {
+    ($color:expr) => (print_color!($color, "\n"));
+    ($color:expr, $fmt:literal $(, $($arg:tt)*)?) => {
+        print_color!($color, $fmt $(, $($arg)*)?);
+        print_color!($color, "\n");
+    };
+}
+
 /// Prints the given formatted string to the VGA text buffer through the global `WRITER` instance.
 #[doc(hidden)]
 pub fn _print(args: fmt::Arguments) {
     use core::fmt::Write;
     use x86_64::instructions::interrupts;
 
-    interrupts::without_interrupts(|| {     
+    interrupts::without_interrupts(|| {
         WRITER.lock().write_fmt(args).unwrap();
+    });
+}
+
+
+/// Prints the given formatted string to the VGA text buffer through the global `WRITER` instance, with a ColorCode for a color.
+#[doc(hidden)]
+pub fn _print_with_color(args: fmt::Arguments, color: ColorCode) {
+    use core::fmt::Write;
+    use x86_64::instructions::interrupts;
+
+    interrupts::without_interrupts(|| {
+        let mut writer = WRITER.lock();
+        let old_color = writer.color_code;
+        writer.color_code = color;
+        writer.write_fmt(args).unwrap();
+        writer.color_code = old_color;
     });
 }
 
