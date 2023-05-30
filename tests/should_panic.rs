@@ -2,7 +2,7 @@
 #![no_main]
 
 use core::panic::PanicInfo;
-use the_operator::{exit_qemu, QemuExitCode, serial_print, serial_println};
+use clamshell::{exit_qemu, QemuExitCode, serial_print, serial_println};
 
 #[no_mangle]
 pub extern "C" fn _start() -> ! {

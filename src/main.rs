@@ -7,9 +7,9 @@
 
 extern crate alloc;
 
-use alloc::boxed::Box;
+
 use core::panic::PanicInfo;
-use clamshell::{println, print_color, println_color, print};
+use clamshell::{println, print_color, print, println_color};
 use clamshell::vga_buffer::{ColorCode, Color};
 use raw_cpuid::CpuId;
 use bootloader::{BootInfo, entry_point};

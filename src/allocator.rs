@@ -1,5 +1,5 @@
-use core::alloc::{GlobalAlloc, Layout};
-use core::ptr::null_mut;
+
+
 use crate::{print_color, println_color, print};
 use crate::vga_buffer::{ColorCode, Color};
 use x86_64::{
